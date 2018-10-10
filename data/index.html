@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+
+
+    <title>FancyLight</title>
+
+
+	<script src="https://rawgit.com/jaames/iro.js/master/dist/iro.js"></script>
+
+
+
+  <script>
+
+		function sendColor() {
+			var fancyMode = document.getElementById("fancyMode").checked;
+			var color = colorPicker.color.hexString;
+			var r = parseInt("0x" + color.substr(1,2));
+			var g = parseInt("0x" + color.substr(3,2));
+			var b = parseInt("0x" + color.substr(5,2));
+
+			console.log(color);
+			console.log(fancyMode);
+			var xhr = new XMLHttpRequest();
+			xhr.open("GET","sendColor?r="+ r + "&g=" + g + "&b=" + b + "&fancyMode=" + fancyMode, true);
+			xhr.onload = function() {
+				if (xhr.readyState === 4) {
+					if (xhr.status === 200) {
+						console.log('Antwort OK ' + xhr.responseText);
+					}
+					else if (xhr.status !== 200) {
+						console.log('Request failed.  Returned status of ' + xhr.status);
+					}
+				ajaxAktiv=false;
+				sliderSend = false;
+				}
+			};
+		    xhr.send();
+		}
+
+		var colorPicker = new iro.ColorPicker("#color-picker-container", {
+			// Set the size of the color picker UI
+			width: 320,
+			height: 320,
+			// Set the initial color to red
+			color: "#000000",
+			css: {
+				h1: {
+					"color": "$color",
+					}
+				}
+		});
+
+
+		colorPicker.on("color:change", function(color,changes){
+			// Show the current color in different formats
+			// Using the selected color: https://rakujira.jp/projects/iro/docs/guide.html#Using-the-Selected-Color
+			values.innerHTML = [
+				"hex: " + color.hexString,
+				"rgb: " + color.rgbString,
+				"hsl: " + color.hslString,
+			].join("<br>")
+			});
+		colorPicker.on("input:end", sendColor);
+
+    function sendTime() {
+      var starttime = document.getElementById("starttime").value;
+      var endtime = document.getElementById("endtime").value;
+
+      console.log("starttime: " + starttime + " endtime: " + endtime);
+
+      var xhr = new XMLHttpRequest();
+			xhr.open("GET","sendTime?starttime="+ starttime + "&endtime=" + endtime, true);
+			xhr.onload = function() {
+				if (xhr.readyState === 4) {
+					if (xhr.status === 200) {
+						console.log('Antwort OK ' + xhr.responseText);
+					}
+					else if (xhr.status !== 200) {
+						console.log('Request failed.  Returned status of ' + xhr.status);
+					}
+				ajaxAktiv=false;
+				sliderSend = false;
+				}
+			};
+		    xhr.send();
+    }
+
+  </script>
+
+
+  </head>
+  <body>
+	<div class="container">
+		<div class="row">
+			<div class="col">
+				<h1>FancyLight</h1>
+				<p>Mit Hilfe des Schiebereglers kannst Du die Helligkeit deines "FancyLight" verändern.</br>
+				   Wähle über das Farbrad die gewünschte Farbe aus.
+			</div>
+		</div>
+		<div class="row">
+			<div class="col">
+				<div class="form-check">
+					<input class="form-check-input" type="checkbox" value="" id="fancyMode" onclick="sendColor()">
+					<label class="form-check-label" for="fancyMode">
+					Fancy Mode
+					</label>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col">
+				<p></p>
+				<div class="btn-group ">
+					<div id="color-picker-container"></div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col">
+				<p></p>
+				<div id="values"></div>
+			</div>
+		</div>
+    <div class="row">
+      <div class="col">
+    		<form>
+          <div class="form-group">
+            <label for="exampleFormControlSelect1">Startzeit</label>
+            <select class="form-control" id="starttime" onchange="sendTime()">
+              <option>1</option>
+              <option>2</option>
+              <option>3</option>
+              <option>4</option>
+              <option>5</option>
+    	        <option>6</option>
+              <option>7</option>
+              <option>8</option>
+              <option>9</option>
+              <option>10</option>
+    	        <option>11</option>
+              <option>12</option>
+              <option>13</option>
+              <option>14</option>
+              <option>15</option>
+    	        <option>16</option>
+              <option>17</option>
+              <option>18</option>
+              <option>19</option>
+							<option>20</option>
+							<option>21</option>
+							<option>22</option>
+							<option>23</option>
+    	        <option>24</option>
+            </select>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+    		<form>
+          <div class="form-group">
+            <label for="exampleFormControlSelect1">Endzeit</label>
+            <select class="form-control" id="endtime" onchange="sendTime()">
+              <option>1</option>
+              <option>2</option>
+              <option>3</option>
+              <option>4</option>
+              <option>5</option>
+    	        <option>6</option>
+              <option>7</option>
+              <option>8</option>
+              <option>9</option>
+              <option>10</option>
+    	        <option>11</option>
+              <option>12</option>
+              <option>13</option>
+              <option>14</option>
+              <option>15</option>
+    	        <option>16</option>
+              <option>17</option>
+              <option>18</option>
+              <option>19</option>
+							<option>20</option>
+							<option>21</option>
+							<option>22</option>
+							<option>23</option>
+    	        <option>24</option>
+            </select>
+          </div>
+        </form>
+      </div>
+    </div>
+	</div>
+
+
+
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+
+  </body>
+</html>
