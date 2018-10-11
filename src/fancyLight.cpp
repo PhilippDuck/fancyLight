@@ -19,7 +19,7 @@ const char *passwordAP = "password";
 
 
 #define PIN 5
-#define LEDS 6
+#define LEDS 3
 
 int red = 0;
 int grn = 0;
@@ -66,6 +66,15 @@ void saveColor() {
   }
 }
 
+void changeLight() {
+  if (fancyMode == "false"){
+    for (int i = 0; i < LEDS; i++){
+      strip.setPixelColor(i,red, grn, blu);
+      strip.show();
+    }
+  }
+}
+
 void getColor() {
   String r = server.arg("r");
   String g = server.arg("g");
@@ -80,6 +89,7 @@ void getColor() {
 
   server.send(200, "text/plain", "OK");
 
+  changeLight();
   saveColor();
 }
 
@@ -247,8 +257,6 @@ void sendNTPpacket(IPAddress &address)
   Udp.endPacket();
 }
 
-
-
 void setup() {
   Serial.begin(9600);
   Serial.println("booting up...");
@@ -317,15 +325,6 @@ bool checkIfLightIsOn() {
   }
 }
 
-void turnOnLight() {
-  if (fancyMode == "false"){
-    for (int i = 0; i < LEDS; i++){
-      strip.setPixelColor(i,red, grn, blu);
-      strip.show();
-    }
-  }
-}
-
 void loop() {
   
   if (WiFi.status() != WL_CONNECTED) {
@@ -341,10 +340,20 @@ void loop() {
 
   if ((hour() == starttime) && !checkIfLightIsOn()) {
     // turn light on 
+    Serial.println("____________________");
+    digitalClockDisplay();
     Serial.println("Light turns on");
+    getColorFromFlash();
+    changeLight();
   } else if ((hour() == endtime) && checkIfLightIsOn()) {
     // turn light off
+    Serial.println("____________________");
+    digitalClockDisplay();
     Serial.println("Light turns off");
+    red = 0;
+    grn = 0;
+    blu = 0;
+    changeLight();
   }
 
 
