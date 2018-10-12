@@ -10,6 +10,7 @@
 #include <ESP8266mDNS.h>
 #include <TimeLib.h>
 #include <WiFiManager.h>
+#include <ArduinoJson.h>
 
 char ssid[40];
 char password[40];
@@ -29,6 +30,7 @@ String sleepMode;
 int starttime;
 int endtime;
 int rainbowSpeed = 500;
+bool lightIsOn = false;
 
 
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(LEDS, PIN, NEO_GRB + NEO_KHZ800);
@@ -52,6 +54,31 @@ void digitalClockDisplay();
 void printDigits(int digits);
 void sendNTPpacket(IPAddress &address);
 
+void saveConfig () {
+  Serial.println("Konfiguration wird gespeichert");
+  DynamicJsonBuffer jsonBuffer;
+  JsonObject& json = jsonBuffer.createObject();
+  json["red"] = red;
+  json["grn"] = grn;
+  json["blu"] = blu;
+  json["fancyMode"] = fancyMode;
+  json["starttime"] = starttime;
+  json["endtime"] = endtime;
+  json.prettyPrintTo(Serial);
+  // jsonConfig = "";
+  // json.printTo(jsonConfig);
+  Serial.println("");
+
+  File configFile = SPIFFS.open("/config.json", "w");
+  if (!configFile) {
+    Serial.println("Öffnen der Konfigurationsdatei zum beschreiben fehlgeschlagen");
+  }
+  
+  json.printTo(configFile);
+  configFile.close();
+  //end save
+}
+
 void saveColor() {
   File f = SPIFFS.open("/color.txt", "w");
   if (!f) {
@@ -67,7 +94,7 @@ void saveColor() {
 }
 
 void changeLight() {
-  if (fancyMode == "false"){
+  if (fancyMode != "true"){
     for (int i = 0; i < LEDS; i++){
       strip.setPixelColor(i,red, grn, blu);
       strip.show();
@@ -91,6 +118,8 @@ void getColor() {
 
   changeLight();
   saveColor();
+  saveConfig();
+  lightIsOn = true;
 }
 
 void getColorFromFlash() {
@@ -317,14 +346,6 @@ void setup() {
   getColorFromFlash();
 }
 
-bool checkIfLightIsOn() {
-  if (red != 0 || grn != 0  || blu != 0) {
-    return true;
-  } else {
-    return false;
-  }
-}
-
 void loop() {
   
   if (WiFi.status() != WL_CONNECTED) {
@@ -338,14 +359,19 @@ void loop() {
 
   currentTime = now();
 
-  if ((hour() == starttime) && !checkIfLightIsOn()) {
+  if (red == 0 && grn == 0 && blu == 0) {
+    lightIsOn = false;
+  }
+
+  if ((hour() == starttime) && !lightIsOn) {
     // turn light on 
     Serial.println("____________________");
     digitalClockDisplay();
     Serial.println("Light turns on");
     getColorFromFlash();
     changeLight();
-  } else if ((hour() == endtime) && checkIfLightIsOn()) {
+    lightIsOn = true;
+  } else if ((hour() == endtime) && lightIsOn) {
     // turn light off
     Serial.println("____________________");
     digitalClockDisplay();
@@ -354,6 +380,7 @@ void loop() {
     grn = 0;
     blu = 0;
     changeLight();
+    lightIsOn = false;
   }
 
 

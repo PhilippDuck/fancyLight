@@ -19,6 +19,12 @@
 
   <script>
 
+		window.onload = getConfig;
+
+		function getConfig() {
+			console.log("Configuration wird abgerufen.")
+		}
+
 		function sendColor() {
 			var fancyMode = document.getElementById("fancyMode").checked;
 			var color = colorPicker.color.hexString;
