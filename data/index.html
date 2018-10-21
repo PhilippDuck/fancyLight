@@ -6,25 +6,277 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
-
-
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<!-- https://www.cssscript.com/ios-style-switches-bootstrap-4/ -->
     <title>FancyLight</title>
-
 
 	<script src="https://rawgit.com/jaames/iro.js/master/dist/iro.js"></script>
 
+	<style>
+		/*
+		*
+		*
+		*
+		* Bootstrap 4 Component - Custom switch
+		* Version: 1.0.11
+		* Copyright (c) 2017-18 Martin Haubek
+		*
+		*
+		*
+		*/
+		.custom-switch .custom-switch-input {
+		display: none; }
+		.custom-switch .custom-switch-input, .custom-switch .custom-switch-input:after, .custom-switch .custom-switch-input:before,
+		.custom-switch .custom-switch-input *,
+		.custom-switch .custom-switch-input *:after,
+		.custom-switch .custom-switch-input *:before,
+		.custom-switch .custom-switch-input + .custom-switch-btn {
+			box-sizing: border-box; }
+			.custom-switch .custom-switch-input:selection, .custom-switch .custom-switch-input:after:selection, .custom-switch .custom-switch-input:before:selection,
+			.custom-switch .custom-switch-input *:selection,
+			.custom-switch .custom-switch-input *:after:selection,
+			.custom-switch .custom-switch-input *:before:selection,
+			.custom-switch .custom-switch-input + .custom-switch-btn:selection {
+			background: none; }
+		.custom-switch .custom-switch-input + .custom-switch-btn {
+			outline: 0;
+			display: inline-block;
+			position: relative;
+			-webkit-user-select: none;
+			-moz-user-select: none;
+				-ms-user-select: none;
+					user-select: none;
+			cursor: pointer;
+			width: 68px;
+			height: 38px;
+			margin: 0;
+			padding: 4px;
+			background: #ced4da;
+			border-radius: 76px;
+			transition: all 300ms ease; }
+			.custom-switch .custom-switch-input + .custom-switch-btn:after, .custom-switch .custom-switch-input + .custom-switch-btn:before {
+			position: relative;
+			display: block;
+			content: "";
+			width: 30px;
+			height: 30px; }
+			.custom-switch .custom-switch-input + .custom-switch-btn:after {
+			left: 2px;
+			border-radius: 50%;
+			background: white;
+			transition: all 300ms ease; }
+			.custom-switch .custom-switch-input + .custom-switch-btn:before {
+			display: none; }
+		.custom-switch .custom-switch-input:checked + .custom-switch-btn {
+			background: #28a745; }
+			.custom-switch .custom-switch-input:checked + .custom-switch-btn:after {
+			left: 30px; }
+			.custom-switch .custom-switch-input:checked + .custom-switch-btn ~ .custom-switch-content-checked {
+			opacity: 1;
+			height: auto; }
+			.custom-switch .custom-switch-input:checked + .custom-switch-btn ~ .custom-switch-content-unchecked {
+			display: none;
+			opacity: 0;
+			height: 0; }
+		.custom-switch .custom-switch-input:not(:checked) + .custom-switch-btn ~ .custom-switch-content-checked {
+			display: none;
+			opacity: 0;
+			height: 0; }
+		.custom-switch .custom-switch-input:not(:checked) + .custom-switch-btn ~ .custom-switch-content-unchecked {
+			opacity: 1;
+			height: auto; }
+		.custom-switch .custom-switch-input[disabled] + .custom-switch-btn {
+			background: rgba(206, 212, 218, 0.6);
+			cursor: default; }
+		.custom-switch .custom-switch-input[disabled]:checked + .custom-switch-btn {
+			background: rgba(40, 167, 69, 0.4); }
 
+		.custom-switch .custom-switch-form-text {
+		display: inline-block;
+		height: 38px;
+		margin-left: .5rem;
+		line-height: 38px;
+		vertical-align: top; }
 
+		.custom-switch.custom-switch-label-io .custom-switch-input + .custom-switch-btn {
+		background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='68' height='38'%3E%3Ctext x='42.5' y='23.75' font-size='12px' font-family='-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji' fill='%23fff'%3EO%3C/text%3E%3C/svg%3E"); }
+
+		.custom-switch.custom-switch-label-io .custom-switch-input:checked + .custom-switch-btn {
+		background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='68' height='38'%3E%3Ctext x='18.13333' y='23.75' font-size='12px' font-family='-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji' fill='%23fff'%3EI%3C/text%3E%3C/svg%3E"); }
+
+		.custom-switch.custom-switch-label-onoff .custom-switch-input + .custom-switch-btn {
+		background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='68' height='38'%3E%3Ctext x='38.85714' y='23.75' font-size='12px' font-family='-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji' fill='%23fff'%3EOff%3C/text%3E%3C/svg%3E"); }
+
+		.custom-switch.custom-switch-label-onoff .custom-switch-input:checked + .custom-switch-btn {
+		background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='68' height='38'%3E%3Ctext x='9.71429' y='23.75' font-size='12px' font-family='-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji' fill='%23fff'%3EOn%3C/text%3E%3C/svg%3E"); }
+
+		.custom-switch.custom-switch-label-yesno .custom-switch-input + .custom-switch-btn {
+		background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='68' height='38'%3E%3Ctext x='38.85714' y='23.75' font-size='12px' font-family='-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji' fill='%23fff'%3ENo%3C/text%3E%3C/svg%3E"); }
+
+		.custom-switch.custom-switch-label-yesno .custom-switch-input:checked + .custom-switch-btn {
+		background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='68' height='38'%3E%3Ctext x='9.71429' y='23.75' font-size='12px' font-family='-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji' fill='%23fff'%3EYes%3C/text%3E%3C/svg%3E"); }
+
+		.custom-switch.custom-switch-label-status .custom-switch-input + .custom-switch-btn {
+		width: 96px;
+		background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='38'%3E%3Ctext x='38.85714' y='23.75' font-size='12px' font-family='-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji' fill='%23fff'%3EDisabled%3C/text%3E%3C/svg%3E"); }
+
+		.custom-switch.custom-switch-label-status .custom-switch-input:checked + .custom-switch-btn {
+		background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='38'%3E%3Ctext x='9.71429' y='23.75' font-size='12px' font-family='-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji' fill='%23fff'%3EEnabled%3C/text%3E%3C/svg%3E"); }
+		.custom-switch.custom-switch-label-status .custom-switch-input:checked + .custom-switch-btn:after {
+			left: 58px; }
+
+		.custom-switch-sm .custom-switch-input + .custom-switch-btn {
+		width: 60px;
+		height: 31px;
+		padding: 3.26316px;
+		border-radius: 62px; }
+		.custom-switch-sm .custom-switch-input + .custom-switch-btn:after, .custom-switch-sm .custom-switch-input + .custom-switch-btn:before {
+			width: 25px;
+			height: 25px; }
+		.custom-switch-sm .custom-switch-input + .custom-switch-btn:after {
+			left: 1px; }
+
+		.custom-switch-sm .custom-switch-input:checked + .custom-switch-btn:after {
+		left: 29px; }
+
+		.custom-switch-sm .custom-switch-form-text {
+		height: 31px;
+		margin-left: .5rem;
+		line-height: 31px; }
+
+		.custom-switch-sm.custom-switch-label-io .custom-switch-input + .custom-switch-btn {
+		background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='31'%3E%3Ctext x='37.5' y='19.375' font-size='11px' font-family='-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji' fill='%23fff'%3EO%3C/text%3E%3C/svg%3E"); }
+
+		.custom-switch-sm.custom-switch-label-io .custom-switch-input:checked + .custom-switch-btn {
+		background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='31'%3E%3Ctext x='16' y='19.375' font-size='11px' font-family='-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji' fill='%23fff'%3EI%3C/text%3E%3C/svg%3E"); }
+
+		.custom-switch-sm.custom-switch-label-onoff .custom-switch-input + .custom-switch-btn {
+		background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='31'%3E%3Ctext x='32.87671' y='19.375' font-size='11px' font-family='-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji' fill='%23fff'%3EOff%3C/text%3E%3C/svg%3E"); }
+
+		.custom-switch-sm.custom-switch-label-onoff .custom-switch-input:checked + .custom-switch-btn {
+		background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='31'%3E%3Ctext x='8.57143' y='19.375' font-size='11px' font-family='-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji' fill='%23fff'%3EOn%3C/text%3E%3C/svg%3E"); }
+
+		.custom-switch-sm.custom-switch-label-yesno .custom-switch-input + .custom-switch-btn {
+		background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='31'%3E%3Ctext x='32.87671' y='19.375' font-size='11px' font-family='-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji' fill='%23fff'%3ENo%3C/text%3E%3C/svg%3E"); }
+
+		.custom-switch-sm.custom-switch-label-yesno .custom-switch-input:checked + .custom-switch-btn {
+		background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='31'%3E%3Ctext x='8.57143' y='19.375' font-size='11px' font-family='-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji' fill='%23fff'%3EYes%3C/text%3E%3C/svg%3E"); }
+
+		.custom-switch-sm.custom-switch-label-status .custom-switch-input + .custom-switch-btn {
+		width: 88px;
+		background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='88' height='31'%3E%3Ctext x='32.87671' y='19.375' font-size='11px' font-family='-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji' fill='%23fff'%3EDisabled%3C/text%3E%3C/svg%3E"); }
+
+		.custom-switch-sm.custom-switch-label-status .custom-switch-input:checked + .custom-switch-btn {
+		background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='88' height='31'%3E%3Ctext x='8.57143' y='19.375' font-size='11px' font-family='-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji' fill='%23fff'%3EEnabled%3C/text%3E%3C/svg%3E"); }
+		.custom-switch-sm.custom-switch-label-status .custom-switch-input:checked + .custom-switch-btn:after {
+			left: 57px; }
+
+		.custom-switch-xs .custom-switch-input + .custom-switch-btn {
+		width: 48px;
+		height: 24px;
+		padding: 2.52632px;
+		border-radius: 48px; }
+		.custom-switch-xs .custom-switch-input + .custom-switch-btn:after, .custom-switch-xs .custom-switch-input + .custom-switch-btn:before {
+			width: 18px;
+			height: 18px; }
+		.custom-switch-xs .custom-switch-input + .custom-switch-btn:after {
+			left: 1px; }
+
+		.custom-switch-xs .custom-switch-input:checked + .custom-switch-btn:after {
+		left: 24px; }
+
+		.custom-switch-xs .custom-switch-form-text {
+		height: 24px;
+		margin-left: .5rem;
+		line-height: 24px; }
+
+		.custom-switch-xs.custom-switch-label-io .custom-switch-input + .custom-switch-btn {
+		background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='24'%3E%3Ctext x='27.42857' y='15' font-size='10px' font-family='-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji' fill='%23fff'%3EO%3C/text%3E%3C/svg%3E"); }
+
+		.custom-switch-xs.custom-switch-label-io .custom-switch-input:checked + .custom-switch-btn {
+		background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='24'%3E%3Ctext x='12.8' y='15' font-size='10px' font-family='-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji' fill='%23fff'%3EI%3C/text%3E%3C/svg%3E"); }
+
+		.custom-switch-xs.custom-switch-label-onoff .custom-switch-input + .custom-switch-btn {
+		background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='24'%3E%3Ctext x='25.6' y='15' font-size='10px' font-family='-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji' fill='%23fff'%3EOff%3C/text%3E%3C/svg%3E"); }
+
+		.custom-switch-xs.custom-switch-label-onoff .custom-switch-input:checked + .custom-switch-btn {
+		background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='24'%3E%3Ctext x='6.85714' y='15' font-size='10px' font-family='-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji' fill='%23fff'%3EOn%3C/text%3E%3C/svg%3E"); }
+
+		.custom-switch-xs.custom-switch-label-yesno .custom-switch-input + .custom-switch-btn {
+		background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='24'%3E%3Ctext x='25.6' y='15' font-size='10px' font-family='-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji' fill='%23fff'%3ENo%3C/text%3E%3C/svg%3E"); }
+
+		.custom-switch-xs.custom-switch-label-yesno .custom-switch-input:checked + .custom-switch-btn {
+		background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='24'%3E%3Ctext x='6.85714' y='15' font-size='10px' font-family='-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji' fill='%23fff'%3EYes%3C/text%3E%3C/svg%3E"); }
+
+		.custom-switch-xs.custom-switch-label-status .custom-switch-input + .custom-switch-btn {
+		width: 76px;
+		background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='76' height='24'%3E%3Ctext x='25.6' y='15' font-size='10px' font-family='-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji' fill='%23fff'%3EDisabled%3C/text%3E%3C/svg%3E"); }
+
+		.custom-switch-xs.custom-switch-label-status .custom-switch-input:checked + .custom-switch-btn {
+		background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='76' height='24'%3E%3Ctext x='6.85714' y='15' font-size='10px' font-family='-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji' fill='%23fff'%3EEnabled%3C/text%3E%3C/svg%3E"); }
+		.custom-switch-xs.custom-switch-label-status .custom-switch-input:checked + .custom-switch-btn:after {
+			left: 52px; }
+
+	</style>
   <script>
 
 		window.onload = getConfig;
 
-		function getConfig() {
-			console.log("Configuration wird abgerufen.")
+		function sendData() {
+			var color = colorPicker.color.hexString;
+			var jsonData = '{"red": "' + parseInt("0x" + color.substr(1,2)) + '",' +
+				'"grn": "' + parseInt("0x" + color.substr(3,2)) + '",' +
+				'"blu": "' + parseInt("0x" + color.substr(5,2)) + '",' +
+				'"fancyMode": "' + document.getElementById("fancyMode").checked + '",' +
+				'"starttime": "' + document.getElementById("starttime").value + '",' +
+				'"endtime": "' + document.getElementById("endtime").value +
+			'"}';
+			console.log(jsonData);
+
+			var xhr = new XMLHttpRequest();
+			xhr.open("GET","sendData?jsonData="+ jsonData, true);
+			xhr.onload = function() {
+				if (xhr.readyState === 4) {
+					if (xhr.status === 200) {
+						console.log('Antwort OK ' + xhr.responseText);
+					}
+					else if (xhr.status !== 200) {
+						console.log('Request failed.  Returned status of ' + xhr.status);
+					}
+				ajaxAktiv=false;
+				sliderSend = false;
+				}
+			};
+		    xhr.send();
 		}
 
+		function getConfig() {
+			console.log("Configuration wird abgerufen.")
+			var xhr = new XMLHttpRequest();
+			xhr.open("GET","getConfig", true);
+			xhr.onload = function() {
+				if (xhr.readyState === 4) {
+					if (xhr.status === 200) {
+						console.log('Antwort OK ' + xhr.responseText);
+						var jsonObj = JSON.parse(xhr.responseText);
+						document.getElementById("starttime").value = jsonObj.starttime;
+						document.getElementById("endtime").value = jsonObj.endtime;
+						colorPicker.color.rgb = { r: jsonObj.red, g: jsonObj.grn, b: jsonObj.blu };
+
+						if (jsonObj.fancyMode == "true") {
+							document.getElementById("fancyMode").checked = true;
+						}
+					}
+					else if (xhr.status !== 200) {
+						console.log('Request failed.  Returned status of ' + xhr.status);
+					}
+				ajaxAktiv=false;
+				sliderSend = false;
+				}
+			};
+		    xhr.send();
+		}
+		
 		function sendColor() {
 			var fancyMode = document.getElementById("fancyMode").checked;
 			var color = colorPicker.color.hexString;
@@ -80,6 +332,11 @@
       var starttime = document.getElementById("starttime").value;
       var endtime = document.getElementById("endtime").value;
 
+			if (starttime == endtime) {
+				alert("Start- und Endzeit dürfen nicht identisch sein!");
+				return;
+			}
+
       console.log("starttime: " + starttime + " endtime: " + endtime);
 
       var xhr = new XMLHttpRequest();
@@ -114,11 +371,15 @@
 		</div>
 		<div class="row">
 			<div class="col">
-				<div class="form-check">
-					<input class="form-check-input" type="checkbox" value="" id="fancyMode" onclick="sendColor()">
-					<label class="form-check-label" for="fancyMode">
-					Fancy Mode
-					</label>
+				<div class="custom-switch custom-switch-label-io">
+					<input class="custom-switch-input" type="checkbox" id="fancyMode" onclick="sendColor()">
+					<label for="fancyMode" class="custom-switch-btn"></label>
+					<div class="custom-switch-content-checked">
+						<span class="text-success">Fancy-Mode An</span>
+					</div>
+					<div class="custom-switch-content-unchecked">
+						<span class="text-danger">Fancy-Mode Aus</span>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -136,81 +397,80 @@
 				<div id="values"></div>
 			</div>
 		</div>
-    <div class="row">
-      <div class="col">
-    		<form>
-          <div class="form-group">
-            <label for="exampleFormControlSelect1">Startzeit</label>
-            <select class="form-control" id="starttime" onchange="sendTime()">
-              <option>1</option>
-              <option>2</option>
-              <option>3</option>
-              <option>4</option>
-              <option>5</option>
-    	        <option>6</option>
-              <option>7</option>
-              <option>8</option>
-              <option>9</option>
-              <option>10</option>
-    	        <option>11</option>
-              <option>12</option>
-              <option>13</option>
-              <option>14</option>
-              <option>15</option>
-    	        <option>16</option>
-              <option>17</option>
-              <option>18</option>
-              <option>19</option>
-							<option>20</option>
-							<option>21</option>
-							<option>22</option>
-							<option>23</option>
-    	        <option>24</option>
-            </select>
-          </div>
-        </form>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col">
-    		<form>
-          <div class="form-group">
-            <label for="exampleFormControlSelect1">Endzeit</label>
-            <select class="form-control" id="endtime" onchange="sendTime()">
-              <option>1</option>
-              <option>2</option>
-              <option>3</option>
-              <option>4</option>
-              <option>5</option>
-    	        <option>6</option>
-              <option>7</option>
-              <option>8</option>
-              <option>9</option>
-              <option>10</option>
-    	        <option>11</option>
-              <option>12</option>
-              <option>13</option>
-              <option>14</option>
-              <option>15</option>
-    	        <option>16</option>
-              <option>17</option>
-              <option>18</option>
-              <option>19</option>
-							<option>20</option>
-							<option>21</option>
-							<option>22</option>
-							<option>23</option>
-    	        <option>24</option>
-            </select>
-          </div>
-        </form>
-      </div>
-    </div>
+		<div class="row">
+			<div class="col">
+				<p></p>
+				<h3>Zeitschaltung</h3>
+				<div class="custom-switch custom-switch-label-io">
+					<input class="custom-switch-input" type="checkbox" id="timer" onclick="sendData()">
+					<label for="timer" class="custom-switch-btn"></label>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-4">
+				<label for="starttime">Startzeit</label>
+				<select class="form-control" id="starttime" onchange="sendTime()">
+					<option>1</option>
+					<option>2</option>
+					<option>3</option>
+					<option>4</option>
+					<option>5</option>
+					<option>6</option>
+					<option>7</option>
+					<option>8</option>
+					<option>9</option>
+					<option>10</option>
+					<option>11</option>
+					<option>12</option>
+					<option>13</option>
+					<option>14</option>
+					<option>15</option>
+					<option>16</option>
+					<option>17</option>
+					<option>18</option>
+					<option>19</option>
+					<option>20</option>
+					<option>21</option>
+					<option>22</option>
+					<option>23</option>
+					<option>24</option>
+				</select>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-4">
+				<label for="starttime">Endzeit</label>
+				<select class="form-control" id="endtime" onchange="sendTime()">
+					<option>1</option>
+					<option>2</option>
+					<option>3</option>
+					<option>4</option>
+					<option>5</option>
+					<option>6</option>
+					<option>7</option>
+					<option>8</option>
+					<option>9</option>
+					<option>10</option>
+					<option>11</option>
+					<option>12</option>
+					<option>13</option>
+					<option>14</option>
+					<option>15</option>
+					<option>16</option>
+					<option>17</option>
+					<option>18</option>
+					<option>19</option>
+					<option>20</option>
+					<option>21</option>
+					<option>22</option>
+					<option>23</option>
+					<option>24</option>
+				</select>
+				<p></p>
+			</div>
+		</div>
 	</div>
-
-
-
-
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

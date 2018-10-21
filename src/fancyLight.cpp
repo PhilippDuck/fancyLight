@@ -11,6 +11,7 @@
 #include <TimeLib.h>
 #include <WiFiManager.h>
 #include <ArduinoJson.h>
+#include <ArduinoOTA.h>
 
 char ssid[40];
 char password[40];
@@ -27,10 +28,12 @@ int grn = 0;
 int blu = 0;
 String fancyMode;
 String sleepMode;
+String jsonConfig;
 int starttime;
 int endtime;
 int rainbowSpeed = 500;
 bool lightIsOn = false;
+bool dataWasSend = false;
 
 
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(LEDS, PIN, NEO_GRB + NEO_KHZ800);
@@ -57,6 +60,20 @@ void sendNTPpacket(IPAddress &address);
 void saveConfig () {
   Serial.println("Konfiguration wird gespeichert");
   DynamicJsonBuffer jsonBuffer;
+  /*
+  if (dataWasSend) {
+    JsonObject& json = jsonBuffer.parseObject(jsonConfig);
+    json.prettyPrintTo(Serial);
+    dataWasSend = false;
+    File configFile = SPIFFS.open("/config.json", "w");
+    if (!configFile) {
+      Serial.println("Öffnen der Konfigurationsdatei zum beschreiben fehlgeschlagen");
+    }
+    
+    json.printTo(configFile);
+    configFile.close();
+  } 
+  */
   JsonObject& json = jsonBuffer.createObject();
   json["red"] = red;
   json["grn"] = grn;
@@ -65,10 +82,8 @@ void saveConfig () {
   json["starttime"] = starttime;
   json["endtime"] = endtime;
   json.prettyPrintTo(Serial);
-  // jsonConfig = "";
-  // json.printTo(jsonConfig);
-  Serial.println("");
-
+  jsonConfig = "";
+  json.printTo(jsonConfig);
   File configFile = SPIFFS.open("/config.json", "w");
   if (!configFile) {
     Serial.println("Öffnen der Konfigurationsdatei zum beschreiben fehlgeschlagen");
@@ -79,27 +94,78 @@ void saveConfig () {
   //end save
 }
 
-void saveColor() {
-  File f = SPIFFS.open("/color.txt", "w");
-  if (!f) {
-    Serial.println("color.txt not found");
+bool readConfig() {
+  if (SPIFFS.begin()) {
+    Serial.println("Dateisystem erfolgreich geöffnet");
+    if (SPIFFS.exists("/config.json")) {
+      Serial.println("Konfigurationsdatei ist vorhanden");
+      File configFile = SPIFFS.open("/config.json", "r");
+      if (configFile) {
+        Serial.println("Konfigurationsdatei erfolgreich geöffnet");
+        size_t size = configFile.size();
+        // Allocate a buffer to store contents of the file.
+        std::unique_ptr<char[]> buf(new char[size]);
+
+        configFile.readBytes(buf.get(), size);
+        DynamicJsonBuffer jsonBuffer;
+        JsonObject& json = jsonBuffer.parseObject(buf.get());
+        if (json.success()) {
+          Serial.println("parsed json");
+
+          red = json["red"];
+          grn = json["grn"];
+          blu = json["blu"];
+          fancyMode = json["fancyMode"].as<String>();
+          starttime = json["starttime"];
+          endtime = json["endtime"];
+
+          json.prettyPrintTo(Serial);
+          jsonConfig = "";
+          json.printTo(jsonConfig);
+          Serial.println("");
+
+          return true;
+          
+        } else {
+          Serial.println("Laden der json Konfiguration fehlgeschlagen");
+          return false;
+        }
+      }
+    } else {
+      Serial.println("Konfigurationsdatei nicht vorhanden");
+      Serial.println("Erstelle Konfiguration");
+      saveConfig();
+      return false;
+    }
   } else {
-    f.print(red);
-    f.print(",");
-    f.print(grn);
-    f.print(",");
-    f.print(blu);
-    f.close();
+    Serial.println("Einhängen des Dateisystems fehlgeschlagen");
+    return false;
   }
 }
 
-void changeLight() {
+void changeLight(int r, int g, int b) {
   if (fancyMode != "true"){
     for (int i = 0; i < LEDS; i++){
-      strip.setPixelColor(i,red, grn, blu);
+      strip.setPixelColor(i,r, g, b);
       strip.show();
     }
   }
+  if (r == 0 && g == 0 && b == 0) {
+    lightIsOn = false;
+  } else {
+    lightIsOn = true;
+  }
+}
+
+void getData() {
+  jsonConfig = server.arg("jsonData");
+  Serial.println(jsonConfig);
+  dataWasSend = true;
+  saveConfig();
+  server.send(200, "text/plain", "OK");
+  //DynamicJsonBuffer jsonBuff;
+  //JsonObject& root = jsonBuff.parseObject(jsonConfig);
+  //root.prettyPrintTo(Serial);
 }
 
 void getColor() {
@@ -116,12 +182,11 @@ void getColor() {
 
   server.send(200, "text/plain", "OK");
 
-  changeLight();
-  saveColor();
+  changeLight(red, grn, blu);
   saveConfig();
   lightIsOn = true;
 }
-
+/*
 void getColorFromFlash() {
   File f = SPIFFS.open("/color.txt" , "r");
   if (!f) {
@@ -139,6 +204,7 @@ void getColorFromFlash() {
     f.close();
   }
 }
+*/
 
 void getTime() {
   String stime = server.arg("starttime");
@@ -159,6 +225,7 @@ void getTime() {
   Serial.println("");
   Serial.println("New start-(" + stime + ") and endtime(" + etime + ").");
   server.send(200, "text/plain", "OK");
+  saveConfig();
 }
 
 // Input a value 0 to 255 to get a color value.
@@ -286,6 +353,11 @@ void sendNTPpacket(IPAddress &address)
   Udp.endPacket();
 }
 
+void getConfig() {
+  Serial.println("Konfiguration wird vom Webserver abgerufen.");
+  server.send(200, "text/plain", jsonConfig);
+}
+
 void setup() {
   Serial.begin(9600);
   Serial.println("booting up...");
@@ -302,7 +374,7 @@ void setup() {
   wifiManager.autoConnect(ssidAP, passwordAP);
   Serial.println("Mit Wlan verbunden");
 
-
+  /*
   if (!MDNS.begin("fancy")) {
     Serial.println("Error setting up MDNS responder!");
     while(1) { 
@@ -310,6 +382,7 @@ void setup() {
     }
   }
   Serial.println("mDNS responder started");
+  */
 
   Serial.println("Starting UDP");
   Udp.begin(localPort);
@@ -324,26 +397,40 @@ void setup() {
   server.serveStatic("/", SPIFFS, "/index.html");
   server.on("/sendColor", getColor);
   server.on("/sendTime", getTime);
+  server.on("/getConfig", getConfig);
+  server.on("/sendData", getData);
   server.begin();
   for (int i = 0; i < LEDS; i++){
     strip.setPixelColor(i,0,0,0);
     strip.show();
   }
 
-  File f = SPIFFS.open("/times.txt", "r");
-  if (!f) {
-    Serial.println("times.txt doesn´t exsist or failed to open.");
-  } else {
-    while (f.available()) {
-      starttime = f.parseInt();
-      Serial.println(starttime);
-      endtime = f.parseInt();
-      Serial.println(endtime);
-    }
-    f.close();
-  }
+  readConfig();
+  changeLight(red, grn, blu);
 
-  getColorFromFlash();
+  ArduinoOTA.setHostname("fancy");
+  ArduinoOTA.onStart([]() {
+    SPIFFS.end();
+    Serial.println("Start");
+  });
+  ArduinoOTA.onEnd([]() {
+    SPIFFS.begin();
+    Serial.println("\nEnd");
+  });
+  ArduinoOTA.onProgress([](unsigned int progress, unsigned int total) {
+    Serial.printf("Progress: %u%%\r \n", (progress / (total / 100)));
+  });
+  ArduinoOTA.onError([](ota_error_t error) {
+    Serial.printf("Error[%u]: ", error);
+    if (error == OTA_AUTH_ERROR) Serial.println("Auth Failed");
+    else if (error == OTA_BEGIN_ERROR) Serial.println("Begin Failed");
+    else if (error == OTA_CONNECT_ERROR) Serial.println("Connect Failed");
+    else if (error == OTA_RECEIVE_ERROR) Serial.println("Receive Failed");
+    else if (error == OTA_END_ERROR) Serial.println("End Failed");
+  });
+  ArduinoOTA.begin();
+  Serial.println("OTA bereit");
+  
 }
 
 void loop() {
@@ -353,33 +440,28 @@ void loop() {
   }
 
   server.handleClient();
+  ArduinoOTA.handle();
+
   if (fancyMode == "true"){
     rainbow(rainbowSpeed);
   }
 
   currentTime = now();
 
-  if (red == 0 && grn == 0 && blu == 0) {
-    lightIsOn = false;
-  }
-
   if ((hour() == starttime) && !lightIsOn) {
     // turn light on 
     Serial.println("____________________");
     digitalClockDisplay();
     Serial.println("Light turns on");
-    getColorFromFlash();
-    changeLight();
+    readConfig();
+    changeLight(red, grn, blu);
     lightIsOn = true;
   } else if ((hour() == endtime) && lightIsOn) {
     // turn light off
     Serial.println("____________________");
     digitalClockDisplay();
     Serial.println("Light turns off");
-    red = 0;
-    grn = 0;
-    blu = 0;
-    changeLight();
+    changeLight(0, 0, 0);
     lightIsOn = false;
   }
 
