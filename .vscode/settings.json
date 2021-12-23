@@ -1,7 +1,11 @@
 {
     "terminal.integrated.env.osx": {
-        "PATH": "/Users/phildu/.platformio/penv/bin:/Users/phildu/.platformio/penv:/Library/Frameworks/Python.framework/Versions/2.7/bin:/Library/Frameworks/Python.framework/Versions/3.6/bin:/Library/Frameworks/Python.framework/Versions/2.7/bin:/Library/Frameworks/Python.framework/Versions/3.6/bin:/Library/Frameworks/Python.framework/Versions/3.4/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/Applications/Wireshark.app/Contents/MacOS",
+        "PATH": "/Users/phildu/.platformio/penv/bin:/Users/phildu/.platformio/penv:/Library/Frameworks/Python.framework/Versions/2.7/bin:/Library/Frameworks/Python.framework/Versions/3.6/bin:/Library/Frameworks/Python.framework/Versions/2.7/bin:/Library/Frameworks/Python.framework/Versions/3.6/bin:/Library/Frameworks/Python.framework/Versions/3.4/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/Applications/Wireshark.app/Contents/MacOS:/Users/phildu",
         "PLATFORMIO_CALLER": "vscode"
     },
-    "C_Cpp.errorSquiggles": "Enabled"
+    "C_Cpp.errorSquiggles": "Enabled",
+    "terminal.integrated.env.windows": {
+        "PATH": "C:\\Users\\Philipp\\.platformio\\penv\\Scripts;C:\\Users\\Philipp\\.platformio\\penv;C:\\Program Files (x86)\\Common Files\\Oracle\\Java\\javapath;C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;C:\\Program Files\\PuTTY\\;C:\\Program Files\\LLVM\\bin;C:\\WINDOWS\\System32\\OpenSSH\\;C:\\Program Files\\Git\\cmd;C:\\Users\\Philipp\\AppData\\Local\\Microsoft\\WindowsApps;C:\\Users\\Philipp\\AppData\\Local\\atom\\bin;C:\\Users\\Philipp\\AppData\\Local\\Microsoft\\WindowsApps;;C:\\Users\\Philipp\\AppData\\Local\\Programs\\Microsoft VS Code\\bin;C:\\Program Files (x86)\\Common Files\\Oracle\\Java\\javapath;C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;C:\\Program Files\\PuTTY\\;C:\\Program Files\\LLVM\\bin;C:\\WINDOWS\\System32\\OpenSSH\\;C:\\Program Files\\Git\\cmd;C:\\Users\\Philipp\\AppData\\Local\\Microsoft\\WindowsApps;C:\\Users\\Philipp\\AppData\\Local\\atom\\bin;C:\\Users\\Philipp\\AppData\\Local\\Microsoft\\WindowsApps;;C:\\Users\\Philipp\\AppData\\Local\\Programs\\Microsoft VS Code\\bin",
+        "PLATFORMIO_CALLER": "vscode"
+    }
 }
