@@ -1,7 +1,7 @@
 /*
   The fancyLight Project
 */
-
+#include <ArduinoJson.h>
 #include <FS.h>
 #include <ArduinoJson.h>
 #include <ESP8266WiFi.h>
@@ -21,7 +21,7 @@ const char *passwordAP = "password";
 
 
 #define PIN 5
-#define LEDS 3
+#define LEDS 8
 
 int red = 0;
 int grn = 0;
@@ -69,10 +69,10 @@ void saveConfig () {
     if (!configFile) {
       Serial.println("Öffnen der Konfigurationsdatei zum beschreiben fehlgeschlagen");
     }
-    
+
     json.printTo(configFile);
     configFile.close();
-  } 
+  }
   */
   JsonObject& json = jsonBuffer.createObject();
   json["red"] = red;
@@ -88,7 +88,7 @@ void saveConfig () {
   if (!configFile) {
     Serial.println("Öffnen der Konfigurationsdatei zum beschreiben fehlgeschlagen");
   }
-  
+
   json.printTo(configFile);
   configFile.close();
   //end save
@@ -125,7 +125,7 @@ bool readConfig() {
           Serial.println("");
 
           return true;
-          
+
         } else {
           Serial.println("Laden der json Konfiguration fehlgeschlagen");
           return false;
@@ -221,7 +221,7 @@ void getTime() {
     f.print(endtime);
     f.close();
   }
-  
+
   Serial.println("");
   Serial.println("New start-(" + stime + ") and endtime(" + etime + ").");
   server.send(200, "text/plain", "OK");
@@ -244,7 +244,7 @@ uint32_t Wheel(byte WheelPos) {
 
 void rainbow(uint8_t wait) {
   uint16_t i, j;
- 
+
   for(j=0; j<256; j++) {
     for(i=0; i<strip.numPixels(); i++) {
       strip.setPixelColor(i, Wheel((i+j) & 255));
@@ -260,7 +260,7 @@ void rainbow(uint8_t wait) {
 
 void rainbowCycle(uint8_t wait) {
   uint16_t i, j;
- 
+
   for(j=0; j<256*5; j++) { // 5 cycles of all colors on wheel
     for(i=0; i< strip.numPixels(); i++) {
       strip.setPixelColor(i, Wheel(((i * 256 / strip.numPixels()) + j) & 255));
@@ -362,13 +362,13 @@ void setup() {
   Serial.begin(9600);
   Serial.println("booting up...");
 
-  
+
   strip.begin();
   strip.setBrightness(100);
   strip.show();
 
   rainbowCycle(4);
- 
+
   WiFi.hostname("FancyLight");
   wifiManager.setMinimumSignalQuality(30);
   wifiManager.autoConnect(ssidAP, passwordAP);
@@ -377,7 +377,7 @@ void setup() {
   /*
   if (!MDNS.begin("fancy")) {
     Serial.println("Error setting up MDNS responder!");
-    while(1) { 
+    while(1) {
       delay(1000);
     }
   }
@@ -386,7 +386,7 @@ void setup() {
 
   Serial.println("Starting UDP");
   Udp.begin(localPort);
-  
+
   setSyncProvider(getNtpTime);
   setSyncInterval(300);
   now();
@@ -430,11 +430,11 @@ void setup() {
   });
   ArduinoOTA.begin();
   Serial.println("OTA bereit");
-  
+
 }
 
 void loop() {
-  
+
   if (WiFi.status() != WL_CONNECTED) {
     wifiManager.autoConnect(ssidAP, passwordAP);
   }
@@ -449,7 +449,7 @@ void loop() {
   currentTime = now();
 
   if ((hour() == starttime) && !lightIsOn) {
-    // turn light on 
+    // turn light on
     Serial.println("____________________");
     digitalClockDisplay();
     Serial.println("Light turns on");
